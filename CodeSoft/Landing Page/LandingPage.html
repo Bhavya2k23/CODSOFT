@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Landing Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style id="app-style">
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #0ea5e9;
+      --accent-color: #f97316;
+      --text-color: #1e293b;
+      --bg-color: #ffffff;
+      --section-padding: 4rem;
+      --font-family: 'Inter', sans-serif;
+      --font-scale: 1;
+      --header-height: 4rem;
+      --button-radius: 0.5rem;
+      --shadow-intensity: 0.1;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      color: var(--text-color);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      padding-top: var(--header-height);
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    
+    .text-primary-color {
+      color: var(--primary-color);
+    }
+    
+    .mobile-nav.open {
+      display: flex;
+    }
+    
+    .hero-section {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      padding: calc(var(--section-padding) * 2) var(--section-padding);
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.75rem 2rem;
+      border-radius: var(--button-radius);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, calc(var(--shadow-intensity) * 1.5));
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, var(--shadow-intensity));
+    }
+    
+    .section {
+      padding: var(--section-padding) 1rem;
+    }
+    
+    .feature-icon {
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .testimonial-card {
+      background-color: #f8fafc;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, calc(var(--shadow-intensity) * 0.5));
+      transition: all 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, var(--shadow-intensity));
+    }
+    
+    .accordion-item {
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .accordion-header {
+      padding: 1.5rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .accordion-content.active {
+      max-height: 500px;
+      padding-bottom: 1.5rem;
+    }
+    
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 350px;
+      background-color: #fff;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, calc(var(--shadow-intensity) * 1.5));
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    
+    .settings-panel.open {
+      transform: translateX(0);
+    }
+    
+    .settings-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1001;
+      background-color: var(--primary-color);
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, calc(var(--shadow-intensity) * 1.5));
+    }
+    
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    
+    .color-swatch.active {
+      border-color: #000;
+      transform: scale(1.1);
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      outline: none;
+    }
+    
+    .spinner {
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 3px solid var(--primary-color);
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .hero-section {
+        min-height: 70vh;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-section {
+        min-height: 60vh;
+        text-align: center;
+      }
+      
+      h1 {
+        font-size: calc(2rem * var(--font-scale));
+      }
+      
+      .testimonial-slider {
+        padding: 0 1rem;
+      }
+      
+      .settings-panel {
+        width: 280px;
+      }
+    }
+
+    /* Settings panel enhancements */
+    .settings-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .settings-section:last-child {
+      border-bottom: none;
+    }
+
+    .settings-section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--primary-color);
+    }
+
+    .color-palette-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .color-group {
+      margin-bottom: 1rem;
+    }
+
+    .color-group-title {
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+
+    .color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .range-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-color);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- New Global Header -->
+  <header class="fixed top-0 left-0 w-full bg-white bg-opacity-95 shadow-sm z-50 px-4 md:px-8 py-3 flex justify-between items-center">
+    <div class="logo font-semibold text-xl">
+      <a href="#heroSection">MySpace</a>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex items-center space-x-6">
+      <a href="#heroSection" class="text-gray-700 hover:text-primary-color transition-colors">Home</a>
+      <a href="#features" class="text-gray-700 hover:text-primary-color transition-colors">Features</a>
+      <a href="#testimonials" class="text-gray-700 hover:text-primary-color transition-colors">Testimonials</a>
+      <a href="#faq" class="text-gray-700 hover:text-primary-color transition-colors">FAQ</a>
+      <a href="#contact" class="text-gray-700 hover:text-primary-color transition-colors">Contact</a>
+    </nav>
+    
+    <!-- Mobile Navigation Toggle -->
+    <button class="lg:hidden text-gray-700 focus:outline-none" id="mobileNavToggle">
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav fixed inset-0 bg-white bg-opacity-95 z-50 flex-col items-center justify-center hidden pt-16">
+      <nav class="flex flex-col items-center space-y-6 text-xl">
+        <a href="#heroSection" class="text-gray-700 hover:text-primary-color transition-colors">Home</a>
+        <a href="#features" class="text-gray-700 hover:text-primary-color transition-colors">Features</a>
+        <a href="#testimonials" class="text-gray-700 hover:text-primary-color transition-colors">Testimonials</a>
+        <a href="#faq" class="text-gray-700 hover:text-primary-color transition-colors">FAQ</a>
+        <a href="#contact" class="text-gray-700 hover:text-primary-color transition-colors">Contact</a>
+      </nav>
+      <button class="absolute top-4 right-4 text-gray-700" id="mobileNavClose">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Settings Toggle Button -->
+  <div class="settings-toggle" id="settingsToggle">
+    <i class="fas fa-cog"></i>
+  </div>
+  
+  <!-- Enhanced Settings Panel -->
+  <div class="settings-panel" id="settingsPanel">
+    <h3 class="text-xl font-bold mb-6">Page Customization</h3>
+    
+    <div class="settings-section">
+      <h4 class="settings-section-title">Color Scheme</h4>
+      
+      <div class="color-palette-grid">
+        <div class="color-group">
+          <p class="color-group-title">Primary Colors</p>
+          <div class="color-swatches">
+            <div class="color-swatch active" style="background-color: #4f46e5;" data-color="#4f46e5" data-target="primary-color"></div>
+            <div class="color-swatch" style="background-color: #2563eb;" data-color="#2563eb" data-target="primary-color"></div>
+            <div class="color-swatch" style="background-color: #7c3aed;" data-color="#7c3aed" data-target="primary-color"></div>
+            <div class="color-swatch" style="background-color: #4338ca;" data-color="#4338ca" data-target="primary-color"></div>
+            <div class="color-swatch" style="background-color: #1e40af;" data-color="#1e40af" data-target="primary-color"></div>
+            <div class="color-swatch" style="background-color: #6d28d9;" data-color="#6d28d9" data-target="primary-color"></div>
+          </div>
+        </div>
+        
+        <div class="color-group">
+          <p class="color-group-title">Secondary Colors</p>
+          <div class="color-swatches">
+            <div class="color-swatch active" style="background-color: #0ea5e9;" data-color="#0ea5e9" data-target="secondary-color"></div>
+            <div class="color-swatch" style="background-color: #10b981;" data-color="#10b981" data-target="secondary-color"></div>
+            <div class="color-swatch" style="background-color: #8b5cf6;" data-color="#8b5cf6" data-target="secondary-color"></div>
+            <div class="color-swatch" style="background-color: #0284c7;" data-color="#0284c7" data-target="secondary-color"></div>
+            <div class="color-swatch" style="background-color: #059669;" data-color="#059669" data-target="secondary-color"></div>
+            <div class="color-swatch" style="background-color: #7c3aed;" data-color="#7c3aed" data-target="secondary-color"></div>
+          </div>
+        </div>
+        
+        <div class="color-group">
+          <p class="color-group-title">Accent Colors</p>
+          <div class="color-swatches">
+            <div class="color-swatch active" style="background-color: #f97316;" data-color="#f97316" data-target="accent-color"></div>
+            <div class="color-swatch" style="background-color: #ec4899;" data-color="#ec4899" data-target="accent-color"></div>
+            <div class="color-swatch" style="background-color: #eab308;" data-color="#eab308" data-target="accent-color"></div>
+            <div class="color-swatch" style="background-color: #d946ef;" data-color="#d946ef" data-target="accent-color"></div>
+            <div class="color-swatch" style="background-color: #14b8a6;" data-color="#14b8a6" data-target="accent-color"></div>
+            <div class="color-swatch" style="background-color: #ef4444;" data-color="#ef4444" data-target="accent-color"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4 class="settings-section-title">Typography</h4>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Font Family</label>
+        <select class="form-input" id="fontFamilySelector">
+          <option value="'Inter', sans-serif">Inter (Default)</option>
+          <option value="'Poppins', sans-serif">Poppins</option>
+          <option value="'Montserrat', sans-serif">Montserrat</option>
+          <option value="'Open Sans', sans-serif">Open Sans</option>
+          <option value="'Roboto', sans-serif">Roboto</option>
+          <option value="'Nunito', sans-serif">Nunito</option>
+          <option value="'Playfair Display', serif">Playfair Display</option>
+          <option value="'Raleway', sans-serif">Raleway</option>
+        </select>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Font Size Scale</label>
+        <input type="range" min="0.8" max="1.2" step="0.05" value="1" class="w-full" id="fontSizeScale">
+        <div class="range-label">
+          <span>Small</span>
+          <span>Default</span>
+          <span>Large</span>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Text Color</label>
+        <div class="color-swatches">
+          <div class="color-swatch active" style="background-color: #1e293b;" data-color="#1e293b" data-target="text-color"></div>
+          <div class="color-swatch" style="background-color: #334155;" data-color="#334155" data-target="text-color"></div>
+          <div class="color-swatch" style="background-color: #475569;" data-color="#475569" data-target="text-color"></div>
+          <div class="color-swatch" style="background-color: #1f2937;" data-color="#1f2937" data-target="text-color"></div>
+          <div class="color-swatch" style="background-color: #111827;" data-color="#111827" data-target="text-color"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4 class="settings-section-title">Layout & Spacing</h4>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Section Padding</label>
+        <input type="range" min="2" max="8" step="0.5" value="4" class="w-full" id="sectionPadding">
+        <div class="range-label">
+          <span>Compact</span>
+          <span>Standard</span>
+          <span>Spacious</span>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Button Border Radius</label>
+        <input type="range" min="0" max="2" step="0.1" value="0.5" class="w-full" id="buttonRadius">
+        <div class="range-label">
+          <span>Sharp</span>
+          <span>Rounded</span>
+          <span>Pill</span>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Shadow Intensity</label>
+        <input type="range" min="0" max="0.3" step="0.05" value="0.1" class="w-full" id="shadowIntensity">
+        <div class="range-label">
+          <span>Subtle</span>
+          <span>Normal</span>
+          <span>Strong</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4 class="settings-section-title">Header Options</h4>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Header Background Opacity</label>
+        <input type="range" min="0.5" max="1" step="0.05" value="0.95" class="w-full" id="headerOpacity">
+        <div class="range-label">
+          <span>Transparent</span>
+          <span>Solid</span>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Header Height</label>
+        <input type="range" min="3" max="6" step="0.5" value="4" class="w-full" id="headerHeight">
+        <div class="range-label">
+          <span>Small</span>
+          <span>Medium</span>
+          <span>Large</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4 class="settings-section-title">Images & Backgrounds</h4>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Hero Background Image URL</label>
+        <input type="text" class="form-input" id="heroImageUrl" value="https://cdn.pixabay.com/photo/2018/01/17/07/06/laptop-3087585_1280.jpg" placeholder="Enter image URL">
+        <p class="text-xs text-gray-500 mt-1">Tip: Use high-resolution landscape images (min. 1920x1080)</p>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Hero Overlay Opacity</label>
+        <input type="range" min="0.1" max="0.8" step="0.1" value="0.5" class="w-full" id="heroOverlay">
+        <div class="range-label">
+          <span>Light</span>
+          <span>Medium</span>
+          <span>Dark</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4 class="settings-section-title">Advanced Options</h4>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Animation Speed</label>
+        <input type="range" min="0.1" max="1" step="0.1" value="0.3" class="w-full" id="animationSpeed">
+        <div class="range-label">
+          <span>Fast</span>
+          <span>Normal</span>
+          <span>Slow</span>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="text-sm mb-2 block">Hover Effects</label>
+        <select class="form-input" id="hoverEffects">
+          <option value="normal">Normal</option>
+          <option value="subtle">Subtle</option>
+          <option value="enhanced">Enhanced</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+    </div>
+    
+    <button class="btn-primary w-full" id="resetSettings">Reset to Defaults</button>
+  </div>
+  
+  <!-- Rest of the HTML content remains exactly the same -->
+  <!-- Hero Section -->
+  <section class="hero-section" id="heroSection" style="background-image: url('https://cdn.pixabay.com/photo/2018/01/17/07/06/laptop-3087585_1280.jpg')">
+    <div class="container mx-auto hero-content text-center text-white">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">Create Beautiful Landing Pages</h1>
+      <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">A powerful, customizable template to showcase your product or service with style and elegance.</p>
+      <a href="javascript:void(0)" class="btn-primary inline-block">Get Started</a>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="section bg-white" id="features">
+        <div class="container mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Key Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 features-grid">
+        <!-- Feature 1 -->
+        <div class="text-center px-4">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Beautiful Design</h3>
+          <p class="text-gray-600">Our landing page templates are crafted with attention to detail, ensuring a professional and engaging look for your visitors.</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="text-center px-4">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Fully Responsive</h3>
+          <p class="text-gray-600">Every element is designed to look perfect on any device, from mobile phones to desktop computers.</p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="text-center px-4">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Lightning Fast</h3>
+          <p class="text-gray-600">Optimized code ensures your page loads quickly, providing a smooth experience for your users.</p>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="text-center px-4">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-cog"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Customizable</h3>
+          <p class="text-gray-600">Easily customize colors, fonts, and layouts to match your brand identity and personal preferences.</p>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="text-center px-4">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">SEO Ready</h3>
+          <p class="text-gray-600">Built with search engines in mind, helping your site rank better and reach more potential customers.</p>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="text-center px-4">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Clean Code</h3>
+          <p class="text-gray-600">Written with best practices, our code is easy to understand and modify for developers of all skill levels.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials Section -->
+  <section class="section bg-gray-50" id="testimonials">
+        <div class="container mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">What Our Users Say</h2>
+      
+      <div class="relative testimonial-slider">
+        <div class="overflow-hidden">
+          <div class="flex transition-transform duration-300 ease-out" id="testimonialSlider">
+            <!-- Testimonials will be loaded dynamically -->
+            <div class="testimonial-loading text-center">
+              <div class="spinner mx-auto"></div>
+              <p class="mt-4">Loading testimonials...</p>
+            </div>
+          </div>
+        </div>
+        
+        <button class="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg z-10 md:-left-5" id="prevTestimonial">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg z-10 md:-right-5" id="nextTestimonial">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="flex justify-center mt-8 space-x-2" id="testimonialDots">
+          <!-- Dots will be added dynamically -->
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ Section -->
+  <section class="section bg-white" id="faq">
+    <div class="container mx-auto max-w-3xl">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+      
+      <div class="accordion">
+        <!-- FAQ Item 1 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h3 class="text-lg font-semibold">How do I customize the colors and fonts?</h3>
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="accordion-content">
+            <p class="text-gray-600">You can easily customize colors and fonts using our intuitive settings panel. Simply click the gear icon in the top-right corner to access all customization options.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ Item 2 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h3 class="text-lg font-semibold">Is this template responsive?</h3>
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="accordion-content">
+            <p class="text-gray-600">Yes! Our template is fully responsive and looks great on all devices, from mobile phones to desktop computers.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ Item 3 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h3 class="text-lg font-semibold">Can I use this for commercial projects?</h3>
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="accordion-content">
+            <p class="text-gray-600">Absolutely! This template is licensed for both personal and commercial use. You're free to modify and adapt it to suit your needs.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ Item 4 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h3 class="text-lg font-semibold">Do you offer technical support?</h3>
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="accordion-content">
+            <p class="text-gray-600">Yes, we provide technical support for all our templates. Simply reach out through our contact form, and our team will assist you as soon as possible.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ Item 5 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h3 class="text-lg font-semibold">Can I request custom modifications?</h3>
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="accordion-content">
+            <p class="text-gray-600">We offer custom modification services for our templates. Please contact us with your specific requirements, and we'll provide you with a quote.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section class="section bg-gray-50" id="contact">
+    <div class="container mx-auto max-w-3xl">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Get in Touch</h2>
+      
+      <div id="contactFormContainer">
+        <form id="contactForm" class="space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input type="text" id="name" name="name" class="form-input" required>
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" required>
+          </div>
+          
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <textarea id="message" name="message" rows="5" class="form-input" required></textarea>
+          </div>
+          
+          <div>
+            <button type="submit" class="btn-primary w-full" id="submitButton">
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div id="formSuccess" class="hidden bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+        <i class="fas fa-check-circle text-green-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-bold text-green-800 mb-2">Message Sent Successfully!</h3>
+        <p class="text-green-600">Thank you for reaching out. We'll get back to you as soon as possible.</p>
+      </div>
+      
+      <div id="formError" class="hidden bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+        <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-bold text-red-800 mb-2">Something Went Wrong</h3>
+        <p class="text-red-600">There was an error sending your message. Please try again later.</p>
+        <button class="mt-4 underline text-red-700" id="tryAgainButton">Try Again</button>
+      </div>
+      
+      <div id="formLoading" class="hidden text-center py-16">
+        <div class="spinner mx-auto mb-4"></div>
+        <p>Sending your message...</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">About Us</h3>
+          <p class="text-gray-400">We create beautiful, responsive landing pages to help businesses grow their online presence and convert visitors into customers.</p>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white transition">Home</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white transition">Features</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white transition">Testimonials</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white transition">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-bold mb-4">Connect With Us</h3>
+          <div class="flex space-x-4 mb-4">
+            <a href="javascript:void(0)" class="bg-gray-700 hover:bg-gray-600 transition w-10 h-10 rounded-full flex items-center justify-center">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="javascript:void(0)" class="bg-gray-700 hover:bg-gray-600 transition w-10 h-10 rounded-full flex items-center justify-center">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="javascript:void(0)" class="bg-gray-700 hover:bg-gray-600 transition w-10 h-10 rounded-full flex items-center justify-center">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="javascript:void(0)" class="bg-gray-700 hover:bg-gray-600 transition w-10 h-10 rounded-full flex items-center justify-center">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+          <p class="text-gray-400">Email: info@example.com</p>
+          <p class="text-gray-400">Phone: +1 (555) 123-4567</p>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 Modern Landing Page. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script id="app-script">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile Navigation Toggle
+      const mobileNavToggle = document.getElementById('mobileNavToggle');
+      const mobileNavClose = document.getElementById('mobileNavClose');
+      const mobileNav = document.querySelector('.mobile-nav');
+      
+      mobileNavToggle.addEventListener('click', function() {
+        mobileNav.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      mobileNavClose.addEventListener('click', function() {
+        mobileNav.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+      
+      // Close mobile nav when clicking on a link
+      const mobileNavLinks = mobileNav.querySelectorAll('a');
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileNav.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+      
+      // Settings Panel Toggle
+      const settingsToggle = document.getElementById('settingsToggle');
+      const settingsPanel = document.getElementById('settingsPanel');
+      
+      settingsToggle.addEventListener('click', function() {
+        settingsPanel.classList.toggle('open');
+      });
+      
+      // Enhanced Color Swatches
+      const colorSwatches = document.querySelectorAll('.color-swatch');
+      colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', function() {
+          // Remove active class from siblings in same group
+          const parentSwatches = this.closest('.color-swatches').querySelectorAll('.color-swatch');
+          parentSwatches.forEach(sibling => sibling.classList.remove('active'));
+          
+          // Add active class to clicked swatch
+          this.classList.add('active');
+          
+          // Update CSS variable
+          const color = this.getAttribute('data-color');
+          const target = this.getAttribute('data-target');
+          document.documentElement.style.setProperty(`--${target}`, color);
+        });
+      });
+      
+      // Font Family Selector
+      const fontFamilySelector = document.getElementById('fontFamilySelector');
+      fontFamilySelector.addEventListener('change', function() {
+        document.documentElement.style.setProperty('--font-family', this.value);
+      });
+      
+      // Font Size Scale
+      const fontSizeScale = document.getElementById('fontSizeScale');
+      fontSizeScale.addEventListener('input', function() {
+        document.documentElement.style.setProperty('--font-scale', this.value);
+      });
+      
+      // Section Padding
+      const sectionPadding = document.getElementById('sectionPadding');
+      sectionPadding.addEventListener('input', function() {
+        document.documentElement.style.setProperty('--section-padding', `${this.value}rem`);
+      });
+      
+      // Button Radius
+      const buttonRadius = document.getElementById('buttonRadius');
+      buttonRadius.addEventListener('input', function() {
+        document.documentElement.style.setProperty('--button-radius', `${this.value}rem`);
+      });
+      
+      // Shadow Intensity
+      const shadowIntensity = document.getElementById('shadowIntensity');
+      shadowIntensity.addEventListener('input', function() {
+        document.documentElement.style.setProperty('--shadow-intensity', this.value);
+      });
+      
+      // Header Height
+      const headerHeight = document.getElementById('headerHeight');
+      headerHeight.addEventListener('input', function() {
+        document.documentElement.style.setProperty('--header-height', `${this.value}rem`);
+      });
+      
+      // Hero Image URL
+      const heroImageUrl = document.getElementById('heroImageUrl');
+      heroImageUrl.addEventListener('change', function() {
+        document.getElementById('heroSection').style.backgroundImage = `url('${this.value}')`;
+      });
+      
+      // Hero Overlay Opacity
+      const heroOverlay = document.getElementById('heroOverlay');
+      heroOverlay.addEventListener('input', function() {
+        const heroSection = document.querySelector('.hero-section');
+        heroSection.style.setProperty('--hero-overlay', this.value);
+      });
+      
+      // Animation Speed
+      const animationSpeed = document.getElementById('animationSpeed');
+      animationSpeed.addEventListener('input', function() {
+        document.documentElement.style.setProperty('--animation-speed', `${this.value}s`);
+      });
+      
+      // Reset Settings
+      const resetSettings = document.getElementById('resetSettings');
+      resetSettings.addEventListener('click', function() {
+        // Reset colors
+        document.documentElement.style.setProperty('--primary-color', '#4f46e5');
+        document.documentElement.style.setProperty('--secondary-color', '#0ea5e9');
+        document.documentElement.style.setProperty('--accent-color', '#f97316');
+        document.documentElement.style.setProperty('--text-color', '#1e293b');
+        
+        // Reset active color swatches
+        colorSwatches.forEach(swatch => {
+          swatch.classList.remove('active');
+          if (swatch.getAttribute('data-color') === '#4f46e5' && swatch.getAttribute('data-target') === 'primary-color') swatch.classList.add('active');
+          if (swatch.getAttribute('data-color') === '#0ea5e9' && swatch.getAttribute('data-target') === 'secondary-color') swatch.classList.add('active');
+          if (swatch.getAttribute('data-color') === '#f97316' && swatch.getAttribute('data-target') === 'accent-color') swatch.classList.add('active');
+          if (swatch.getAttribute('data-color') === '#1e293b' && swatch.getAttribute('data-target') === 'text-color') swatch.classList.add('active');
+        });
+        
+        // Reset font family
+        document.documentElement.style.setProperty('--font-family', "'Inter', sans-serif");
+        fontFamilySelector.value = "'Inter', sans-serif";
+        
+        // Reset font size scale
+        document.documentElement.style.setProperty('--font-scale', '1');
+        fontSizeScale.value = 1;
+        
+        // Reset section padding
+        document.documentElement.style.setProperty('--section-padding', '4rem');
+        sectionPadding.value = 4;
+        
+        // Reset button radius
+        document.documentElement.style.setProperty('--button-radius', '0.5rem');
+        buttonRadius.value = 0.5;
+        
+        // Reset shadow intensity
+        document.documentElement.style.setProperty('--shadow-intensity', '0.1');
+        shadowIntensity.value = 0.1;
+        
+        // Reset header options
+        document.documentElement.style.setProperty('--header-height', '4rem');
+        headerHeight.value = 4;
+        
+        const header = document.querySelector('header');
+        header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+        headerOpacity.value = 0.95;
+        
+        // Reset hero image
+        document.getElementById('heroSection').style.backgroundImage = "url('https://cdn.pixabay.com/photo/2018/01/17/07/06/laptop-3087585_1280.jpg')";
+        heroImageUrl.value = 'https://cdn.pixabay.com/photo/2018/01/17/07/06/laptop-3087585_1280.jpg';
+        
+        // Reset hero overlay
+        document.querySelector('.hero-section').style.setProperty('--hero-overlay', '0.5');
+        heroOverlay.value = 0.5;
+        
+        // Reset animation speed
+        document.documentElement.style.setProperty('--animation-speed', '0.3s');
+        animationSpeed.value = 0.3;
+        
+        // Reset hover effects
+        document.getElementById('hoverEffects').value = 'normal';
+        
+        // Close panel after reset
+        setTimeout(() => {
+          settingsPanel.classList.remove('open');
+        }, 500);
+      });
+      
+      // Header Background Opacity
+      const headerOpacity = document.getElementById('headerOpacity');
+      const header = document.querySelector('header');
+      headerOpacity.addEventListener('input', function() {
+        header.style.backgroundColor = `rgba(255, 255, 255, ${this.value})`;
+      });
+      
+      // Accordion functionality
+      const accordionHeaders = document.querySelectorAll('.accordion-header');
+      accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+          const content = this.nextElementSibling;
+          const icon = this.querySelector('i');
+          
+          // Toggle active class
+          content.classList.toggle('active');
+          
+          // Toggle icon
+          if (content.classList.contains('active')) {
+            icon.classList.replace('fa-plus', 'fa-minus');
+          } else {
+            icon.classList.replace('fa-minus', 'fa-plus');
+          }
+        });
+      });
+      
+      // Load testimonials
+      loadTestimonials();
+      
+      // Contact form submission
+      const contactForm = document.getElementById('contactForm');
+      const formSuccess = document.getElementById('formSuccess');
+      const formError = document.getElementById('formError');
+      const formLoading = document.getElementById('formLoading');
+      const contactFormContainer = document.getElementById('contactFormContainer');
+      const tryAgainButton = document.getElementById('tryAgainButton');
+      
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading spinner
+        contactFormContainer.classList.add('hidden');
+        formLoading.classList.remove('hidden');
+        
+        // Simulate form submission (this would normally be an API call)
+        setTimeout(() => {
+          formLoading.classList.add('hidden');
+          
+          // 90% chance of success for demo purposes
+          if (Math.random() < 0.9) {
+            formSuccess.classList.remove('hidden');
+          } else {
+            formError.classList.remove('hidden');
+          }
+        }, 1500);
+      });
+      
+      // Try again button
+      tryAgainButton.addEventListener('click', function() {
+        formError.classList.add('hidden');
+        contactFormContainer.classList.remove('hidden');
+        contactForm.reset();
+      });
+    });
+    
+    // Testimonials functionality
+    function loadTestimonials() {
+      // Simulate loading testimonials from a JSON file
+      setTimeout(() => {
+        // Mock testimonial data
+        const testimonials = [
+          {
+            id: 1,
+            text: "This landing page template exceeded all my expectations. It was incredibly easy to customize and helped me launch my business website in record time.",
+            author: "Sarah Johnson",
+            company: "Tech Innovators",
+            avatar: "https://cdn.pixabay.com/photo/2018/04/27/03/50/portrait-3353699_640.jpg"
+          },
+          {
+            id: 2,
+            text: "The responsive design is flawless. My site looks amazing on every device, from phones to large desktop screens. Highly recommended!",
+            author: "Michael Chen",
+            company: "Design Masters",
+            avatar: "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_640.jpg"
+          },
+          {
+            id: 3,
+            text: "Customer support was outstanding. Any questions I had were answered promptly, making the setup process smooth and hassle-free.",
+            author: "Jessica Williams",
+            company: "Creative Solutions",
+            avatar: "https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_640.jpg"
+          },
+          {
+            id: 4,
+            text: "The customization options are incredible. I was able to perfectly match my brand colors and style without any coding knowledge.",
+            author: "David Rodriguez",
+            company: "Growth Strategies",
+            avatar: "https://cdn.pixabay.com/photo/2016/11/21/14/53/man-1845814_640.jpg"
+          }
+        ];
+        
+        renderTestimonials(testimonials);
+      }, 1000);
+    }
+    
+    function renderTestimonials(testimonials) {
+      const slider = document.getElementById('testimonialSlider');
+      const dotsContainer = document.getElementById('testimonialDots');
+      
+      // Clear loading message
+      slider.innerHTML = '';
+      
+      // Add testimonials to slider
+      testimonials.forEach((testimonial, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'min-w-full px-4 md:px-8 flex-shrink-0';
+        slide.innerHTML = `
+          <div class="testimonial-card">
+            <p class="mb-4 text-gray-600 italic">"${testimonial.text}"</p>
+            <div class="flex items-center">
+              <img src="${testimonial.avatar}" alt="${testimonial.author}" class="w-12 h-12 rounded-full object-cover mr-4">
+              <div>
+                <h4 class="font-bold">${testimonial.author}</h4>
+                <p class="text-sm text-gray-500">${testimonial.company}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        slider.appendChild(slide);
+        
+        // Add dot
+        const dot = document.createElement('button');
+        dot.className = 'w-3 h-3 rounded-full bg-gray-300';
+        if (index === 0) dot.classList.add('bg-gray-800');
+        dot.setAttribute('data-index', index);
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+      });
+      
+      // Set up navigation
+      let currentSlide = 0;
+      const totalSlides = testimonials.length;
+      
+      document.getElementById('prevTestimonial').addEventListener('click', () => {
+        goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+      });
+      
+      document.getElementById('nextTestimonial').addEventListener('click', () => {
+        goToSlide((currentSlide + 1) % totalSlides);
+      });
+      
+      function goToSlide(index) {
+        slider.style.transform = `translateX(-${index * 100}%)`;
+        
+        // Update dots
+        const dots = dotsContainer.querySelectorAll('button');
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('bg-gray-800');
+            dot.classList.remove('bg-gray-300');
+          } else {
+            dot.classList.add('bg-gray-300');
+            dot.classList.remove('bg-gray-800');
+          }
+        });
+        
+        currentSlide = index;
+      }
+      
+      // Auto-advance slides every 5 seconds
+      setInterval(() => {
+        goToSlide((currentSlide + 1) % totalSlides);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
